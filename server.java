@@ -48,20 +48,20 @@ class server {
         Runnable r1= () -> {
            // thread implementation
            
-           System.out.println("reading..");
+           System.out.println("Reading started.");
            while(true)
            {
             // reada data from buffer reader object
                try {
                  String msg = br.readLine();
-                 // print msg in console 
-                 System.out.println("client:" + msg);
-                 if(msg.equals("exit"));
+                 
+                 if(msg.equals("exit"))
                    {
                     System.out.println("Client has terminate the chat");
                     break;
                    }
-                  
+                // print msg in console 
+                System.out.println("client:" + msg); 
                 }
                 catch (Exception e){
                 e.printStackTrace();
