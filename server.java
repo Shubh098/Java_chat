@@ -49,25 +49,26 @@ class server {
            // thread implementation
            
            System.out.println("Reading started.");
+           try {
            while(true)
            {
             // reada data from buffer reader object
-               try {
                  String msg = br.readLine();
                  
                  if(msg.equals("exit"))
                    {
                     System.out.println("Client has terminate the chat");
+                    socket.close();
                     break;
                    }
                 // print msg in console 
                 System.out.println("client:" + msg); 
-                }
-                catch (Exception e){
-                e.printStackTrace();
-                }
                 
             }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
         };
       new Thread(r1).start();
     }
@@ -77,20 +78,27 @@ class server {
          // thread-  data user lega and send krega client tak
          System.out.println("Writer started..");
          Runnable r2= () -> {
-            while(true)
+            try {
+            while(true && !socket.isClosed())
             {
-                 try{
+                
                   //taking data from console and storing it in a buffer  
                   BufferedReader br1 = new BufferedReader(new InputStreamReader(System.in));
                   // reading data from buffer
                   String content = br1.readLine();
+
                   out.println(content);
                   out.flush();
-                }
-                catch(Exception e){
-                    e.printStackTrace();
-                }
+                 
+                  if (content.equals("exit"))
+                  {
+                    socket.close();
+                  }
             }
+            }
+            catch(Exception e){
+            e.printStackTrace();
+           }
          };
          // create a thread object anf passed thread 
          new Thread(r2).start(); 
