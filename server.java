@@ -11,7 +11,8 @@ class server {
     BufferedReader br;
     //to write out in output stram
     PrintWriter out;
-
+    
+    // Constructor
     public server()
     {
         try {
@@ -35,17 +36,66 @@ class server {
         }
 
     }
-
+   
+    // to do simultaneously reading and writign we require the threading concept now
+    /**
+     * 
+     */
     public void startReading()
     {
-        
+        // thread- read krke deta  rhega
+        // step to create thread using lambda expression
+        Runnable r1= () -> {
+           // thread implementation
+           
+           System.out.println("reading..");
+           while(true)
+           {
+            // reada data from buffer reader object
+               try {
+                 String msg = br.readLine();
+                 // print msg in console 
+                 System.out.println("client:" + msg);
+                 if(msg.equals("exit"));
+                   {
+                    System.out.println("Client has terminate the chat");
+                    break;
+                   }
+                  
+                }
+                catch (Exception e){
+                e.printStackTrace();
+                }
+                
+            }
+        };
+      new Thread(r1).start();
     }
 
     public void startWriting()
     {
-
+         // thread-  data user lega and send krega client tak
+         System.out.println("Writer started..");
+         Runnable r2= () -> {
+            while(true)
+            {
+                 try{
+                  //taking data from console and storing it in a buffer  
+                  BufferedReader br1 = new BufferedReader(new InputStreamReader(System.in));
+                  // reading data from buffer
+                  String content = br1.readLine();
+                  out.println(content);
+                  out.flush();
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+         };
+         // create a thread object anf passed thread 
+         new Thread(r2).start(); 
     }
-    
+
     public static void main(String[] args)
     {
         System.out.println("Going to start server");
